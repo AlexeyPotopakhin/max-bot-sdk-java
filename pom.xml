@@ -42,7 +42,7 @@
     	<dependency>
     	    <groupId>com.github.AlexeyPotopakhin</groupId>
     	    <artifactId>max-bot-api-client-java</artifactId>
-    	    <version>0.0.3</version>
+    	    <version>0.0.4</version>
     	</dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
