@@ -10,15 +10,7 @@ import ru.max.bot.annotations.UpdateHandler;
 import ru.max.bot.builders.NewMessageBodyBuilder;
 import ru.max.bot.commands.CommandLine;
 import ru.max.botapi.client.MaxClient;
-import ru.max.botapi.model.BotStartedUpdate;
-import ru.max.botapi.model.Message;
-import ru.max.botapi.model.MessageBody;
-import ru.max.botapi.model.MessageCreatedUpdate;
-import ru.max.botapi.model.MessageEditedUpdate;
-import ru.max.botapi.model.MessageRemovedUpdate;
-import ru.max.botapi.model.NewMessageBody;
-import ru.max.botapi.model.Update;
-import ru.max.botapi.model.User;
+import ru.max.botapi.model.*;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -54,6 +46,14 @@ public class MaxBotBaseTest {
     @Test
     public void shouldHandleUpdateReturnNoResponse() {
         Update update = new BotStartedUpdate(1L, mock(User.class), 1L);
+        Object response = testBot.onUpdate(update);
+        testBot.verify();
+        assertThat(response, is(nullValue()));
+    }
+
+    @Test
+    public void shouldHandleBotStoppedUpdate() {
+        Update update = new BotStoppedUpdate(1L, mock(User.class), 1L);
         Object response = testBot.onUpdate(update);
         testBot.verify();
         assertThat(response, is(nullValue()));
@@ -251,6 +251,13 @@ public class MaxBotBaseTest {
 
         @UpdateHandler
         public Object onBotStarted(BotStartedUpdate update) {
+            assertThat(update, is(notNullValue()));
+            signal();
+            return null;
+        }
+
+        @UpdateHandler
+        public Object onBotStopped(BotStoppedUpdate update) {
             assertThat(update, is(notNullValue()));
             signal();
             return null;
